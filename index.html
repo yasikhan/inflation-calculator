@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How a dollar has changed in America using the gold and silver standard</title>
-<meta name="description" content="Convert an amount between any two years by the price of gold and silver rather than by CPI. Data from 1900.">
+<title>The Evolution of the Dollar</title>
+<meta name="description" content="Measuring the relative value of the dollar using the gold and silver standard. Data from 1900.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Fraunces:SOFT,WONK,opsz,wght@0..100,0..1,9..144,300..700&display=swap">
@@ -14,8 +14,9 @@
 <main class="sheet">
 
   <header class="masthead">
-    <h1 class="masthead__title">How a dollar has changed in America using the
-      gold and silver standard</h1>
+    <h1 class="masthead__title">The Evolution of the Dollar</h1>
+    <p class="masthead__lede">Measuring the relative value of the dollar using the
+      <mark class="mark-au">gold</mark> and <mark class="mark-ag">silver</mark> standard.</p>
   </header>
 
   <form class="convert" id="controls" autocomplete="off">
@@ -61,6 +62,16 @@
       <p class="note" data-slot="to-price">&mdash;</p>
     </div>
 
+    <p class="head head--cpi">In CPI</p>
+    <div class="cell cell--cpi-metal">
+      <p class="metal"><span class="metal__weight" data-slot="cpi-multiple">&mdash;</span></p>
+      <p class="note" data-slot="cpi-from">&mdash;</p>
+    </div>
+    <div class="cell cell--cpi-dollars">
+      <p class="answer" data-slot="cpi-amount">&mdash;</p>
+      <p class="note" data-slot="cpi-to">&mdash;</p>
+    </div>
+
     <div class="ruler ruler--from">
       <p class="ruler__label" aria-hidden="true">Year you had it</p>
       <div class="ruler__scale">
@@ -88,6 +99,7 @@
 
   <footer class="method">
     <h2 class="method__head">Method</h2>
+    <div class="method__body">
     <p>Your amount is divided by the price of an ounce in the year you had it, then multiplied
       by the price of an ounce in the year you are pricing it in. The ounce is the fixed
       quantity; only the dollars on either side of it move.</p>
@@ -104,8 +116,13 @@
       which tracks the annual New York price to within about 0.3%. The CPI-U comparison comes
       from <a href="https://fred.stlouisfed.org/series/CPIAUCNS">FRED series CPIAUCNS</a> and
       begins in 1913.</p>
+    </div>
+
     <p class="method__stamp" id="asof"></p>
   </footer>
+
+  <p class="colophon">&copy; 2026 Yasmeena Khan <span aria-hidden="true">|</span>
+    <a href="https://github.com/yasikhan/inflation-calculator">GitHub repo</a></p>
 
 </main>
 <script src="assets/app.js"></script>

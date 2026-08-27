@@ -42,6 +42,12 @@
     });
   }
 
+  function round1(value) {
+    return value.toLocaleString("en-US", {
+      minimumFractionDigits: 1, maximumFractionDigits: 1
+    });
+  }
+
   function multiple(value) {
     return value.toLocaleString("en-US", {
       minimumFractionDigits: 1,
@@ -97,6 +103,13 @@
       el.textContent = format(el._shown);
       el._frame = requestAnimationFrame(step);
     });
+  }
+
+  function setCell(name, text, value, format) {
+    var el = els.convert.querySelector('[data-slot="' + name + '"]');
+    if (!el) { return; }
+    el._format = format;
+    paint(el, text, value);
   }
 
   function setSlot(metal, name, text, value, format) {
@@ -173,8 +186,34 @@
         function (v) { return money(v) + " an ounce in " + to + partial; });
     });
 
+    renderCpi(amount, from, to, partial);
     renderSentence(amount, from, to, answers);
     renderLedger(amount, from, to);
+  }
+
+  function renderCpi(amount, from, to, partial) {
+    var fromCpi = DATA.years[String(from)].cpi;
+    var toCpi = DATA.years[String(to)].cpi;
+    var first = DATA.meta.cpi_first_year;
+
+    // CPI-U does not exist before 1913, and the row says so rather than guessing.
+    if (!fromCpi || !toCpi) {
+      ["cpi-multiple", "cpi-amount"].forEach(function (name) {
+        setCell(name, "—", null, null);
+      });
+      setCell("cpi-from", !fromCpi ? "No CPI-U for " + from : "CPI-U " + round1(fromCpi) + " in " + from, null, null);
+      setCell("cpi-to", !toCpi ? "No CPI-U for " + to
+        : "CPI-U " + round1(toCpi) + " in " + to + partial, null, null);
+      return;
+    }
+
+    var ratio = toCpi / fromCpi;
+    setCell("cpi-multiple", multiple(ratio), ratio, multiple);
+    setCell("cpi-amount", money(amount * ratio), amount * ratio, money);
+    setCell("cpi-from", "CPI-U " + round1(fromCpi) + " in " + from, fromCpi,
+      function (v) { return "CPI-U " + round1(v) + " in " + from; });
+    setCell("cpi-to", "CPI-U " + round1(toCpi) + " in " + to + partial, toCpi,
+      function (v) { return "CPI-U " + round1(v) + " in " + to + partial; });
   }
 
   function renderSentence(amount, from, to, answers) {
@@ -191,33 +230,12 @@
 
   function renderLedger(amount, from, to) {
     if (from === to) { els.ledger.textContent = ""; return; }
-
-    var parts = [];
-    var fromCpi = DATA.years[String(from)].cpi;
-    var toCpi = DATA.years[String(to)].cpi;
-
-    if (fromCpi && toCpi) {
-      parts.push("Official CPI puts it at <b>" +
-        money(amount * toCpi / fromCpi) + "</b> instead.");
-    } else {
-      var missing = fromCpi ? to : from;
-      parts.push("The CPI-U series begins in " + DATA.meta.cpi_first_year +
-        ", so there is no official figure for " + missing + ".");
-    }
-
     var early = Math.min(from, to);
     var late = Math.max(from, to);
-    var sentence = "From " + early + " to " + late + " the dollar price of gold moved <b>" +
+    els.ledger.innerHTML = "From " + early + " to " + late +
+      " the dollar price of gold moved <b>" +
       multiple(priceOf(late, "gold") / priceOf(early, "gold")) + "</b> and silver <b>" +
-      multiple(priceOf(late, "silver") / priceOf(early, "silver")) + "</b>";
-    if (DATA.years[String(early)].cpi && DATA.years[String(late)].cpi) {
-      sentence += ", against <b>" +
-        multiple(DATA.years[String(late)].cpi / DATA.years[String(early)].cpi) +
-        "</b> for the CPI basket";
-    }
-    parts.push(sentence + ".");
-
-    els.ledger.innerHTML = parts.join(" ");
+      multiple(priceOf(late, "silver") / priceOf(early, "silver")) + "</b>.";
   }
 
   /* ---------- the ruler ---------- */

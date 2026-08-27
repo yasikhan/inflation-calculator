@@ -1,7 +1,8 @@
-# How a dollar has changed in America
+# The Evolution of the Dollar
 
-An inflation calculator that measures the dollar against gold and silver instead of
-against CPI.
+Measuring the relative value of the dollar using the gold and silver standard — an
+inflation calculator anchored to metal rather than to CPI, with the official CPI shown
+alongside for contrast.
 
 Enter an amount, the year you had it, and the year you want it priced in. The amount is
 converted into ounces of gold and ounces of silver at the first year's price, then back into

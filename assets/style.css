@@ -61,16 +61,36 @@ a:hover { text-decoration-color: currentColor; }
 
 .masthead__title {
   margin: 0;
-  max-width: 18ch;
   font-family: var(--serif);
   font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
   font-weight: 400;
-  font-size: clamp(2.1rem, 5.6vw, 3.6rem);
-  line-height: 1.14;
-  padding-bottom: 0.12em;
+  font-size: clamp(2.4rem, 6.4vw, 4.1rem);
+  line-height: 1.1;
+  padding-bottom: 0.06em;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
+
+.masthead__lede {
+  margin: 1.15rem 0 0;
+  font-size: clamp(1.02rem, 1.9vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--ink-mute);
+  text-wrap: pretty;
+}
+
+mark {
+  padding: 0.14em 0.45em 0.2em;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  color: var(--ink);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.mark-au { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%2044%27%20preserveAspectRatio%3D%27none%27%3E%3Cfilter%20id%3D%27r%27%20x%3D%27-14%25%27%20y%3D%27-40%25%27%20width%3D%27128%25%27%20height%3D%27180%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.09%200.35%27%20numOctaves%3D%272%27%20seed%3D%2711%27%20result%3D%27n%27%2F%3E%3CfeDisplacementMap%20in%3D%27SourceGraphic%27%20in2%3D%27n%27%20scale%3D%274%27%20xChannelSelector%3D%27R%27%20yChannelSelector%3D%27G%27%2F%3E%3C%2Ffilter%3E%3Cg%20filter%3D%27url%28%23r%29%27%3E%3Cpath%20d%3D%27M%202%2C17%20C%2024%2C10%2046%2C16%2072%2C12%20C%2098%2C8%20124%2C16%20150%2C11%20C%20172%2C7%20188%2C14%20198%2C9%20L%20197%2C33%20C%20176%2C39%20152%2C31%20126%2C36%20C%20100%2C41%2074%2C32%2048%2C37%20C%2028%2C40%2014%2C34%203%2C38%20Z%27%20fill%3D%27%23D4AF37%27%20fill-opacity%3D%270.62%27%2F%3E%3Cpath%20d%3D%27M%2014%2C16%20C%2040%2C12%2062%2C17%2086%2C14%20L%2085%2C21%20C%2060%2C24%2038%2C19%2013%2C23%20Z%27%20fill%3D%27%23F4E1A0%27%20fill-opacity%3D%270.5%27%2F%3E%3Cpath%20d%3D%27M%20104%2C30%20C%20130%2C34%20154%2C28%20190%2C31%20L%20189%2C36%20C%20152%2C33%20128%2C39%20103%2C35%20Z%27%20fill%3D%27%23D4AF37%27%20fill-opacity%3D%270.45%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+.mark-ag { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%2044%27%20preserveAspectRatio%3D%27none%27%3E%3Cfilter%20id%3D%27r%27%20x%3D%27-14%25%27%20y%3D%27-40%25%27%20width%3D%27128%25%27%20height%3D%27180%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.09%200.35%27%20numOctaves%3D%272%27%20seed%3D%274%27%20result%3D%27n%27%2F%3E%3CfeDisplacementMap%20in%3D%27SourceGraphic%27%20in2%3D%27n%27%20scale%3D%274%27%20xChannelSelector%3D%27R%27%20yChannelSelector%3D%27G%27%2F%3E%3C%2Ffilter%3E%3Cg%20filter%3D%27url%28%23r%29%27%3E%3Cpath%20d%3D%27M%202%2C15%20C%2024%2C8%2046%2C14%2072%2C10%20C%2098%2C6%20124%2C14%20150%2C9%20C%20172%2C5%20188%2C12%20198%2C7%20L%20197%2C35%20C%20176%2C41%20152%2C33%20126%2C38%20C%20100%2C43%2074%2C34%2048%2C39%20C%2028%2C42%2014%2C36%203%2C40%20Z%27%20fill%3D%27%23A5ABB1%27%20fill-opacity%3D%270.62%27%2F%3E%3Cpath%20d%3D%27M%2014%2C14%20C%2040%2C10%2062%2C15%2086%2C12%20L%2085%2C19%20C%2060%2C22%2038%2C17%2013%2C21%20Z%27%20fill%3D%27%23E6EAEC%27%20fill-opacity%3D%270.5%27%2F%3E%3Cpath%20d%3D%27M%20104%2C32%20C%20130%2C36%20154%2C30%20190%2C33%20L%20189%2C38%20C%20152%2C35%20128%2C41%20103%2C37%20Z%27%20fill%3D%27%23A5ABB1%27%20fill-opacity%3D%270.45%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
 
 /* ---------- the conversion grid ---------- */
 
@@ -82,6 +102,8 @@ a:hover { text-decoration-color: currentColor; }
     "amount-h  head-m    head-d"
     "amount    gold-m    gold-d"
     "amount    silver-m  silver-d"
+    "amount    cpi-h     ."
+    "amount    cpi-m     cpi-d"
     "from-r    .         to-r";
   margin: clamp(2.75rem, 6vw, 4.5rem) 0 0;
   padding: clamp(1.5rem, 3vw, 2rem) 0 clamp(1.75rem, 3.5vw, 2.5rem);
@@ -105,6 +127,7 @@ a:hover { text-decoration-color: currentColor; }
 .head--amount  { grid-area: amount-h; }
 .head--metal   { grid-area: head-m; }
 .head--dollars { grid-area: head-d; }
+.head--cpi     { grid-area: cpi-h; margin-top: 0.4rem; }
 
 /* ---------- the fields, which must read as fields ---------- */
 
@@ -306,6 +329,11 @@ a:hover { text-decoration-color: currentColor; }
 .cell--dollars.cell[data-metal="gold"]   { grid-area: gold-d; }
 .cell--metal.cell[data-metal="silver"]   { grid-area: silver-m; }
 .cell--dollars.cell[data-metal="silver"] { grid-area: silver-d; }
+.cell--cpi-metal   { grid-area: cpi-m; }
+.cell--cpi-dollars { grid-area: cpi-d; }
+.cell--cpi-metal .metal__weight,
+.cell--cpi-dollars .answer { color: var(--ink-mute); }
+.cell--cpi-dollars .answer { font-size: clamp(1.55rem, 3.8vw, 2.2rem); }
 
 .metal, .answer {
   margin: 0;
@@ -363,7 +391,6 @@ a:hover { text-decoration-color: currentColor; }
 
 .sentence {
   margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
-  max-width: 44em;
   font-family: var(--serif);
   font-variation-settings: "opsz" 40, "SOFT" 0, "WONK" 0;
   font-size: clamp(1.05rem, 2.2vw, 1.3rem);
@@ -380,7 +407,6 @@ a:hover { text-decoration-color: currentColor; }
   margin: clamp(1.1rem, 2.5vw, 1.6rem) 0 0;
   padding-top: 1.1rem;
   border-top: 1px solid var(--rule);
-  max-width: 46em;
   font-size: 0.95rem;
   color: var(--ink-mute);
   text-wrap: pretty;
@@ -399,7 +425,12 @@ a:hover { text-decoration-color: currentColor; }
   line-height: 1.65;
   color: var(--ink-mute);
 }
-.method p { max-width: 42em; margin: 0 0 0.9rem; }
+.method p { margin: 0 0 0.9rem; break-inside: avoid; }
+
+.method__body {
+  columns: 2;
+  column-gap: clamp(2rem, 5vw, 3.5rem);
+}
 
 .method__head {
   margin: 0 0 0.9rem;
@@ -418,6 +449,18 @@ a:hover { text-decoration-color: currentColor; }
   text-transform: uppercase;
 }
 
+.colophon {
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.7rem;
+  font-stretch: 112%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.colophon span { padding: 0 0.35em; color: var(--rule-firm); }
+
 /* ---------- narrow screens ---------- */
 
 @media (max-width: 58rem) {
@@ -430,6 +473,8 @@ a:hover { text-decoration-color: currentColor; }
       "head-m    head-d"
       "gold-m    gold-d"
       "silver-m  silver-d"
+      "cpi-h     ."
+      "cpi-m     cpi-d"
       "to-r      to-r";
   }
   .head--amount { margin-bottom: 0.8rem; }
@@ -448,12 +493,19 @@ a:hover { text-decoration-color: currentColor; }
       "head-m"
       "gold-m"
       "silver-m"
+      "cpi-h"
+      "cpi-m"
       "head-d"
       "gold-d"
       "silver-d"
+      "cpi-d"
       "to-r";
   }
   .head--dollars { margin-top: clamp(1.25rem, 4vw, 1.75rem); }
+}
+
+@media (max-width: 46rem) {
+  .method__body { columns: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
