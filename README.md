@@ -9,8 +9,8 @@ converted into ounces of gold and ounces of silver at the first year's price, th
 dollars at the second year's price. The ounce is the fixed quantity; only the dollars on
 either side of it move.
 
-$250 in 1965 would be $31,635.39 in 2026 dollars measured in gold, or $13,819.92 measured in
-silver. Official CPI puts it at $2,627.72 instead.
+$250 in 1965 is 7.042 oz of gold or 193.68 oz of silver, which is $31,635.39 or $13,819.92
+in 2026 dollars. Official CPI puts the same $250 at $2,627.72.
 
 Static site, no build step and no dependencies — GitHub Pages serves the repo root directly.
 

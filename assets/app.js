@@ -11,12 +11,9 @@
     amount: document.getElementById("amount"),
     fromYear: document.getElementById("from-year"),
     toYear: document.getElementById("to-year"),
-    fromRuler: document.getElementById("from-ruler"),
-    toRuler: document.getElementById("to-ruler"),
     convert: document.getElementById("controls"),
     toYearLabel: document.getElementById("to-year-label"),
-    sentence: document.getElementById("sentence"),
-    ledger: document.getElementById("ledger"),
+    status: document.getElementById("status"),
     asof: document.getElementById("asof")
   };
 
@@ -165,8 +162,6 @@
 
     if (amount === null) {
       blankAll();
-      els.sentence.textContent = "Type an amount to convert.";
-      els.ledger.textContent = "";
       return;
     }
 
@@ -187,8 +182,6 @@
     });
 
     renderCpi(amount, from, to, partial);
-    renderSentence(amount, from, to, answers);
-    renderLedger(amount, from, to);
   }
 
   function renderCpi(amount, from, to, partial) {
@@ -216,69 +209,15 @@
       function (v) { return "CPI-U " + round1(v) + " in " + to + partial; });
   }
 
-  function renderSentence(amount, from, to, answers) {
-    if (from === to) {
-      els.sentence.textContent = "Pick two different years to convert between.";
-      return;
-    }
-    els.sentence.innerHTML =
-      "<b>" + money(amount) + " in " + from + "</b> would be " +
-      '<b class="au">' + money(answers.gold) + "</b> in " + to +
-      " dollars measured in gold, or " +
-      '<b class="ag">' + money(answers.silver) + "</b> measured in silver.";
-  }
-
-  function renderLedger(amount, from, to) {
-    if (from === to) { els.ledger.textContent = ""; return; }
-    var early = Math.min(from, to);
-    var late = Math.max(from, to);
-    els.ledger.innerHTML = "From " + early + " to " + late +
-      " the dollar price of gold moved <b>" +
-      multiple(priceOf(late, "gold") / priceOf(early, "gold")) + "</b> and silver <b>" +
-      multiple(priceOf(late, "silver") / priceOf(early, "silver")) + "</b>.";
-  }
-
-  /* ---------- the ruler ---------- */
-
-  function buildRuler(slider) {
-    var marks = slider.parentNode.querySelector(".ruler__marks");
-    var span = LAST - FIRST;
-    var step = span > 90 ? 20 : span > 40 ? 10 : 5;
-    var labelEvery = span > 90 ? 2 : 1;
-    var years = [];
-
-    for (var year = Math.ceil(FIRST / step) * step; year <= LAST; year += step) {
-      years.push(year);
-    }
-    if (years[0] !== FIRST) { years.unshift(FIRST); }
-
-    marks.innerHTML = "";
-    years.forEach(function (year, index) {
-      var mark = document.createElement("span");
-      // Every mark is a tick; only some carry a label, so the numbers never collide.
-      var labelled = index % labelEvery === 0;
-      mark.className = labelled ? "mark" : "mark mark--minor";
-      mark.style.left = ((year - FIRST) / span * 100) + "%";
-      if (labelled) { mark.textContent = year; }
-      marks.appendChild(mark);
-    });
-  }
-
   /* ---------- wiring ---------- */
 
-  function link(number, slider) {
-    number.addEventListener("input", function () {
-      var year = clampYear(number.value);
-      if (year !== null) { slider.value = year; render(); }
+  function bindYear(input) {
+    input.addEventListener("input", function () {
+      if (clampYear(input.value) !== null) { render(); }
     });
-    number.addEventListener("blur", function () {
-      var year = clampYear(number.value);
-      number.value = year === null ? slider.value : year;
-      slider.value = number.value;
-      render();
-    });
-    slider.addEventListener("input", function () {
-      number.value = slider.value;
+    input.addEventListener("blur", function () {
+      var year = clampYear(input.value);
+      input.value = year === null ? DATA.meta.last_year : year;
       render();
     });
   }
@@ -288,16 +227,11 @@
     FIRST = data.meta.first_year;
     LAST = data.meta.last_year;
 
-    document.documentElement.style.setProperty("--tick", (100 / (LAST - FIRST)) + "%");
-
-    [[els.fromYear, els.fromRuler], [els.toYear, els.toRuler]].forEach(function (pair) {
-      pair.forEach(function (el) {
-        el.min = FIRST;
-        el.max = LAST;
-      });
-      pair[1].value = pair[0].value = clampYear(pair[0].value);
-      buildRuler(pair[1]);
-      link(pair[0], pair[1]);
+    [els.fromYear, els.toYear].forEach(function (input) {
+      input.min = FIRST;
+      input.max = LAST;
+      input.value = clampYear(input.value);
+      bindYear(input);
     });
 
     els.amount.addEventListener("input", render);
@@ -323,7 +257,7 @@
     })
     .then(start)
     .catch(function () {
-      els.ledger.textContent =
+      els.status.textContent =
         "The price data did not load. Reload the page, or check that data/metals.json is present.";
     });
 })();

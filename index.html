@@ -72,30 +72,9 @@
       <p class="note" data-slot="cpi-to">&mdash;</p>
     </div>
 
-    <div class="ruler ruler--from">
-      <p class="ruler__label" aria-hidden="true">Year you had it</p>
-      <div class="ruler__scale">
-        <div class="ruler__ticks" aria-hidden="true"></div>
-        <input class="ruler__slider" id="from-ruler" type="range" step="1" value="1965"
-             aria-label="Year you had it, slider">
-        <div class="ruler__marks" aria-hidden="true"></div>
-      </div>
-    </div>
-    <div class="ruler ruler--to">
-      <p class="ruler__label" aria-hidden="true">Year to price it in</p>
-      <div class="ruler__scale">
-        <div class="ruler__ticks" aria-hidden="true"></div>
-        <input class="ruler__slider" id="to-ruler" type="range" step="1" value="2026"
-             aria-label="Year to price it in, slider">
-        <div class="ruler__marks" aria-hidden="true"></div>
-      </div>
-    </div>
-
   </form>
 
-  <p class="sentence" id="sentence" aria-live="polite"></p>
-
-  <p class="ledger" id="ledger"></p>
+  <p class="status" id="status" role="status"></p>
 
   <footer class="method">
     <h2 class="method__head">Method</h2>
