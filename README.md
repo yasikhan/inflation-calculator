@@ -7,8 +7,8 @@ converted into ounces of gold and ounces of silver at the first year's price, th
 dollars at the second year's price. The ounce is the fixed quantity; only the dollars on
 either side of it move.
 
-$100 in 2026 is $0.79 in 1965 dollars measured in gold, $1.81 measured in silver, and $9.51
-by official CPI.
+$250 in 1965 would be $31,635.39 in 2026 dollars measured in gold, or $13,819.92 measured in
+silver. Official CPI puts it at $2,627.72 instead.
 
 Static site, no build step and no dependencies — GitHub Pages serves the repo root directly.
 

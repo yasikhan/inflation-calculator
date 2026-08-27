@@ -13,7 +13,9 @@
     toYear: document.getElementById("to-year"),
     fromRuler: document.getElementById("from-ruler"),
     toRuler: document.getElementById("to-ruler"),
-    results: document.getElementById("results"),
+    convert: document.getElementById("controls"),
+    toYearLabel: document.getElementById("to-year-label"),
+    sentence: document.getElementById("sentence"),
     ledger: document.getElementById("ledger"),
     asof: document.getElementById("asof")
   };
@@ -97,24 +99,22 @@
     });
   }
 
-  function setSlot(row, name, text, value, format) {
-    var el = row.querySelector('[data-slot="' + name + '"]');
+  function setSlot(metal, name, text, value, format) {
+    var el = els.convert.querySelector(
+      '[data-metal="' + metal + '"] [data-slot="' + name + '"]');
     if (!el) { return; }
     el._format = format;
     paint(el, text, value);
   }
 
-  function blankRow(row) {
-    ["source-amount", "target-amount", "ounces", "source-price", "target-price"]
-      .forEach(function (name) {
-        var el = row.querySelector('[data-slot="' + name + '"]');
-        if (el) {
-          if (el._frame) { cancelAnimationFrame(el._frame); el._frame = null; }
-          if (el._timer) { clearTimeout(el._timer); el._timer = null; }
-          el._target = null;
-          el._shown = null;
-          el.textContent = "—";
-        }
+  function blankAll() {
+    els.convert.querySelectorAll("[data-slot]")
+      .forEach(function (el) {
+        if (el._frame) { cancelAnimationFrame(el._frame); el._frame = null; }
+        if (el._timer) { clearTimeout(el._timer); el._timer = null; }
+        el._target = null;
+        el._shown = null;
+        el.textContent = "—";
       });
   }
 
@@ -144,53 +144,61 @@
     var amount = readAmount();
     var from = clampYear(els.fromYear.value);
     var to = clampYear(els.toYear.value);
-    var rows = els.results.querySelectorAll(".assay");
 
     if (from === null || to === null) { return; }
 
+    els.toYearLabel.textContent = "dollars";
+    var partial = DATA.years[String(to)].partial ? ", year to date" : "";
+
     if (amount === null) {
-      Array.prototype.forEach.call(rows, blankRow);
-      els.ledger.textContent = "Enter an amount to convert.";
+      blankAll();
+      els.sentence.textContent = "Type an amount to convert.";
+      els.ledger.textContent = "";
       return;
     }
 
-    Array.prototype.forEach.call(rows, function (row) {
-      var metal = row.dataset.metal;
+    var answers = {};
+    ["gold", "silver"].forEach(function (metal) {
       var fromPrice = priceOf(from, metal);
       var toPrice = priceOf(to, metal);
       var ounces = amount / fromPrice;
       var equivalent = ounces * toPrice;
+      answers[metal] = equivalent;
 
-      setSlot(row, "source-amount", money(amount), amount, money);
-      setSlot(row, "ounces", weight(ounces), ounces, weight);
-      setSlot(row, "target-amount", money(equivalent), equivalent, money);
-      setSlot(row, "source-price", money(fromPrice) + " an ounce", fromPrice,
-        function (v) { return money(v) + " an ounce"; });
-      setSlot(row, "target-price", money(toPrice) + " an ounce", toPrice,
-        function (v) { return money(v) + " an ounce"; });
-
-      row.querySelector('[data-slot="source-year"]').textContent = yearLabel(from);
-      row.querySelector('[data-slot="target-year"]').textContent = yearLabel(to);
+      setSlot(metal, "ounces", weight(ounces), ounces, weight);
+      setSlot(metal, "target-amount", money(equivalent), equivalent, money);
+      setSlot(metal, "from-price", money(fromPrice) + " an ounce in " + from, fromPrice,
+        function (v) { return money(v) + " an ounce in " + from; });
+      setSlot(metal, "to-price", money(toPrice) + " an ounce in " + to + partial, toPrice,
+        function (v) { return money(v) + " an ounce in " + to + partial; });
     });
 
+    renderSentence(amount, from, to, answers);
     renderLedger(amount, from, to);
   }
 
-  function renderLedger(amount, from, to) {
+  function renderSentence(amount, from, to, answers) {
     if (from === to) {
-      els.ledger.textContent =
-        "Both years are " + from + ", so there is nothing to convert. " +
-        "Move one of the years apart to see what the dollar did in between.";
+      els.sentence.textContent = "Pick two different years to convert between.";
       return;
     }
+    els.sentence.innerHTML =
+      "<b>" + money(amount) + " in " + from + "</b> would be " +
+      '<b class="au">' + money(answers.gold) + "</b> in " + to +
+      " dollars measured in gold, or " +
+      '<b class="ag">' + money(answers.silver) + "</b> measured in silver.";
+  }
+
+  function renderLedger(amount, from, to) {
+    if (from === to) { els.ledger.textContent = ""; return; }
 
     var parts = [];
     var fromCpi = DATA.years[String(from)].cpi;
     var toCpi = DATA.years[String(to)].cpi;
 
     if (fromCpi && toCpi) {
-      parts.push("Official CPI puts the same " + money(amount) + " at <b>" +
-        money(amount * toCpi / fromCpi) + "</b>.");
+      parts.push("Official CPI puts it at <b>" +
+        money(amount * toCpi / fromCpi) + "</b> instead.");
     } else {
       var missing = fromCpi ? to : from;
       parts.push("The CPI-U series begins in " + DATA.meta.cpi_first_year +
@@ -279,6 +287,7 @@
       var value = readAmount();
       if (value !== null) { els.amount.value = money(value).slice(1); }
     });
+    els.amount.addEventListener("focus", function () { els.amount.select(); });
     document.getElementById("controls").addEventListener("submit", function (e) {
       e.preventDefault();
     });
