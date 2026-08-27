@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assay — inflation measured in gold and silver</title>
+<meta name="description" content="Convert an amount between any two years by the price of gold and silver rather than by CPI. Data from 1900.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Fraunces:SOFT,WONK,opsz,wght@0..100,0..1,9..144,300..700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Assay</p>
+    <h1 class="masthead__title">The dollar moves.<br>The ounce doesn&rsquo;t.</h1>
+    <p class="masthead__lede">Convert an amount between any two years by the price of gold and
+      silver instead of by CPI. Prices run from 1900 to today.</p>
+  </header>
+
+  <form class="controls" id="controls" autocomplete="off">
+    <div class="field field--amount">
+      <label class="field__label" for="amount">Amount</label>
+      <div class="entry">
+        <span class="entry__prefix" aria-hidden="true">$</span>
+        <input class="entry__input" id="amount" name="amount" type="text"
+               inputmode="decimal" value="100" spellcheck="false">
+      </div>
+    </div>
+
+    <div class="field field--year">
+      <label class="field__label" for="from-year">Year you had it</label>
+      <div class="entry">
+        <input class="entry__input" id="from-year" name="from-year" type="number"
+               step="1" value="2026">
+      </div>
+      <div class="ruler">
+        <div class="ruler__ticks" aria-hidden="true"></div>
+        <input class="ruler__slider" id="from-ruler" type="range" step="1" value="2026"
+               aria-label="Year you had it, slider">
+        <div class="ruler__marks" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="field field--year">
+      <label class="field__label" for="to-year">Year to price it in</label>
+      <div class="entry">
+        <input class="entry__input" id="to-year" name="to-year" type="number"
+               step="1" value="1965">
+      </div>
+      <div class="ruler">
+        <div class="ruler__ticks" aria-hidden="true"></div>
+        <input class="ruler__slider" id="to-ruler" type="range" step="1" value="1965"
+               aria-label="Year to price it in, slider">
+        <div class="ruler__marks" aria-hidden="true"></div>
+      </div>
+    </div>
+  </form>
+
+  <section class="results" id="results" aria-live="polite">
+
+    <article class="assay" data-metal="gold">
+      <h2 class="assay__head">
+        <span class="assay__stamp">Au</span>
+        <span class="assay__name">Gold</span>
+      </h2>
+      <div class="assay__grid">
+        <div class="col">
+          <p class="col__label">What you had</p>
+          <p class="col__figure" data-slot="source-amount">&mdash;</p>
+          <p class="col__note"><span data-slot="source-year">&mdash;</span><br>
+            <span class="col__price" data-slot="source-price">&mdash;</span></p>
+        </div>
+        <div class="col col--pivot">
+          <p class="col__label">The constant</p>
+          <p class="col__weight"><span data-slot="ounces">&mdash;</span><span class="col__unit">oz</span></p>
+          <p class="col__note col__note--stamp">Fine gold</p>
+        </div>
+        <div class="col">
+          <p class="col__label">What it was</p>
+          <p class="col__figure" data-slot="target-amount">&mdash;</p>
+          <p class="col__note"><span data-slot="target-year">&mdash;</span><br>
+            <span class="col__price" data-slot="target-price">&mdash;</span></p>
+        </div>
+      </div>
+    </article>
+
+    <article class="assay" data-metal="silver">
+      <h2 class="assay__head">
+        <span class="assay__stamp">Ag</span>
+        <span class="assay__name">Silver</span>
+      </h2>
+      <div class="assay__grid">
+        <div class="col">
+          <p class="col__label">What you had</p>
+          <p class="col__figure" data-slot="source-amount">&mdash;</p>
+          <p class="col__note"><span data-slot="source-year">&mdash;</span><br>
+            <span class="col__price" data-slot="source-price">&mdash;</span></p>
+        </div>
+        <div class="col col--pivot">
+          <p class="col__label">The constant</p>
+          <p class="col__weight"><span data-slot="ounces">&mdash;</span><span class="col__unit">oz</span></p>
+          <p class="col__note col__note--stamp">Fine silver</p>
+        </div>
+        <div class="col">
+          <p class="col__label">What it was</p>
+          <p class="col__figure" data-slot="target-amount">&mdash;</p>
+          <p class="col__note"><span data-slot="target-year">&mdash;</span><br>
+            <span class="col__price" data-slot="target-price">&mdash;</span></p>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <p class="ledger" id="ledger"></p>
+
+  <footer class="method">
+    <h2 class="method__head">Method</h2>
+    <p>Your amount is divided by the price of an ounce in the year you had it, then multiplied
+      by the price of an ounce in the year you are pricing it in. The ounce is the fixed
+      quantity; only the dollars on either side of it move.</p>
+    <p>Each year is valued at the midpoint of its opening and closing price. That is not the
+      same as the year&rsquo;s average, and in a violent year the two part company: silver opened
+      1980 at $39.95 and closed it at $15.50, a midpoint of $27.73 against a true annual mean
+      near $20.98.</p>
+    <p>From 1968 the prices are the daily London fixes published by the
+      <a href="https://prices.lbma.org.uk/">LBMA</a>, taking each year&rsquo;s first and last fix.
+      Before 1968 there was one published figure per year, so the opening and closing prices
+      are the same: gold at its administered price, $20.67 until 1933 and $35.00 from 1934, and
+      silver at the unit value in
+      <a href="https://www.usgs.gov/centers/national-minerals-information-center/historical-statistics-mineral-commodities-united">USGS Data Series 140</a>,
+      which tracks the annual New York price to within about 0.3%. The CPI-U comparison comes
+      from <a href="https://fred.stlouisfed.org/series/CPIAUCNS">FRED series CPIAUCNS</a> and
+      begins in 1913.</p>
+    <p class="method__stamp" id="asof"></p>
+  </footer>
+
+</main>
+<script src="assets/app.js"></script>
+</body>
+</html>

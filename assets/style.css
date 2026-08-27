@@ -1,0 +1,417 @@
+/* Assay — inflation measured in gold and silver.
+   Brass marks gold and steel marks silver, everywhere and only there. */
+
+:root {
+  --paper:    #EDEEE8;
+  --panel:    #E3E5DD;
+  --ink:      #16181A;
+  --ink-mute: #6B7069;
+  --rule:     #C7CABF;
+  --rule-firm:#A9AD9F;
+  --brass:    #8A6A2F;
+  --steel:    #3E5C6E;
+
+  --metal: var(--ink);
+
+  --serif: "Fraunces", "Hoefler Text", Georgia, serif;
+  --sans:  "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --measure: 62rem;
+  --gap: clamp(1.75rem, 4vw, 3.25rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  font-synthesis-weight: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule-firm);
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-color: currentColor; }
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+.sheet {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 5.5rem) clamp(1.25rem, 5vw, 3rem) 4rem;
+}
+
+/* ---------- masthead ---------- */
+
+.eyebrow {
+  margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-stretch: 118%;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.masthead__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7.5vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+.masthead__lede {
+  margin: 1.4rem 0 0;
+  max-width: 34em;
+  font-size: 1.0625rem;
+  color: var(--ink-mute);
+  text-wrap: pretty;
+}
+
+/* ---------- controls ---------- */
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1.15fr);
+  gap: clamp(1.5rem, 3.5vw, 2.75rem);
+  align-items: start;
+  margin: clamp(2.75rem, 6vw, 4.5rem) 0 0;
+  padding: clamp(1.5rem, 3vw, 2rem) 0 clamp(1.75rem, 3.5vw, 2.5rem);
+  border-top: 1px solid var(--rule-firm);
+  border-bottom: 1px solid var(--rule-firm);
+}
+
+.field__label {
+  display: block;
+  margin: 0 0 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  border-bottom: 1px solid var(--rule-firm);
+  padding-bottom: 0.15rem;
+}
+.entry:focus-within { border-bottom-color: var(--brass); }
+
+.entry__prefix {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "WONK" 1;
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  color: var(--ink-mute);
+}
+
+.entry__input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.entry__input:focus { outline: none; }
+.entry__input::-webkit-outer-spin-button,
+.entry__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.entry__input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.entry__input[aria-invalid="true"] { color: var(--brass); }
+
+/* ---------- the ruler ---------- */
+
+.ruler {
+  position: relative;
+  margin-top: 1.1rem;
+  padding-top: 10px;
+}
+
+.ruler__ticks {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  /* one hairline per year across the span */
+  background-image: repeating-linear-gradient(
+    to right, var(--rule-firm) 0 1px, transparent 1px var(--tick, 0.7936%));
+  opacity: 0.55;
+}
+
+.ruler__marks {
+  position: relative;
+  height: 1.6rem;
+}
+
+.mark {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-weight: 500;
+  font-stretch: 112%;
+  letter-spacing: 0.13em;
+  color: var(--ink-mute);
+  white-space: nowrap;
+}
+.mark::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 1px;
+  height: 11px;
+  margin-bottom: 3px;
+  background: var(--ink-mute);
+}
+
+.ruler__slider {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: ew-resize;
+}
+.ruler__slider::-webkit-slider-runnable-track {
+  height: 22px;
+  background: none;
+}
+.ruler__slider::-moz-range-track { height: 22px; background: none; }
+
+/* a caliper mark, not a knob */
+.ruler__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2px;
+  height: 22px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink);
+}
+.ruler__slider::-moz-range-thumb {
+  width: 2px;
+  height: 22px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink);
+}
+.ruler__slider:focus-visible { outline-offset: 1px; }
+
+/* ---------- the assay rows ---------- */
+
+.results { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+.assay { --metal: var(--brass); }
+.assay[data-metal="silver"] { --metal: var(--steel); }
+.assay + .assay { margin-top: clamp(2rem, 5vw, 3.25rem); }
+
+.assay__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.assay__stamp {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-stretch: 122%;
+  letter-spacing: 0.16em;
+  color: var(--metal);
+}
+
+.assay__name {
+  font-size: 0.68rem;
+  font-weight: 500;
+  font-stretch: 115%;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.assay__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.col {
+  padding: clamp(1rem, 2.5vw, 1.5rem) clamp(0.85rem, 2vw, 1.4rem);
+}
+.col:first-child { padding-left: 0; }
+.col:last-child { padding-right: 0; }
+
+.col__label {
+  margin: 0 0 0.7rem;
+  font-size: 0.63rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.col__figure,
+.col__weight {
+  margin: 0;
+  font-variant-numeric: lining-nums tabular-nums;
+  line-height: 1.05;
+  overflow-wrap: break-word;
+}
+
+.col__figure {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  letter-spacing: -0.02em;
+}
+
+/* the weight is stamped, not written */
+.col__weight {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-stretch: 116%;
+  font-size: clamp(1.6rem, 4.2vw, 2.5rem);
+  letter-spacing: 0.01em;
+  color: var(--metal);
+}
+
+.col__unit {
+  margin-left: 0.35em;
+  font-size: 0.4em;
+  font-weight: 500;
+  font-stretch: 116%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: 0.2em;
+}
+
+.col__note {
+  margin: 0.85rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink-mute);
+}
+
+.col__price { font-variant-numeric: lining-nums tabular-nums; }
+
+/* the pivot carries the argument: panel, double rule, metal colour */
+.col--pivot {
+  background: var(--panel);
+}
+.col--pivot .col__label { color: var(--ink); }
+.col--pivot .col__note {
+  border-top: 3px double var(--rule-firm);
+  font-size: 0.63rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+/* ---------- ledger line and method ---------- */
+
+.ledger {
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule-firm);
+  max-width: 46em;
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  text-wrap: pretty;
+}
+.ledger b {
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.method {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--ink-mute);
+}
+.method p { max-width: 42em; margin: 0 0 0.9rem; }
+
+.method__head {
+  margin: 0 0 0.9rem;
+  font-size: 0.63rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.method__stamp {
+  font-size: 0.63rem;
+  font-stretch: 112%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 62rem) {
+  .controls { grid-template-columns: 1fr 1fr; }
+  .field--amount { grid-column: 1 / -1; }
+}
+
+@media (max-width: 44rem) {
+  .controls { grid-template-columns: 1fr; }
+  .assay__grid { grid-template-columns: 1fr; }
+  .col { padding-inline: 0; }
+  .col--pivot { padding-inline: clamp(0.85rem, 4vw, 1.4rem); }
+  .col + .col { border-top: 1px solid var(--rule); }
+  .col--pivot + .col { border-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* unlabelled minor ticks between the labelled ones */
+.mark--minor::before {
+  height: 6px;
+  background: var(--rule-firm);
+}
