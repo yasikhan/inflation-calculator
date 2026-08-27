@@ -1,6 +1,7 @@
-# Assay
+# How a dollar has changed in America
 
-An inflation calculator that measures the dollar against metal instead of against CPI.
+An inflation calculator that measures the dollar against gold and silver instead of
+against CPI.
 
 Enter an amount, the year you had it, and the year you want it priced in. The amount is
 converted into ounces of gold and ounces of silver at the first year's price, then back into

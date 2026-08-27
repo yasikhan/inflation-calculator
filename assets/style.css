@@ -1,24 +1,28 @@
-/* Assay — inflation measured in gold and silver.
-   Brass marks gold and steel marks silver, everywhere and only there. */
+/* How a dollar has changed in America using the gold and silver standard.
+   Gold and silver each carry their own colour, everywhere and only there.
+   Literal metal (#D4AF37, #C0C0C0) reaches only 1.8:1 and 1.6:1 on this
+   ground, so each metal is held to a legible value and given a deeper tone
+   for text at body size. */
 
 :root {
   --paper:    #EDEEE8;
-  --panel:    #E3E5DD;
   --ink:      #16181A;
   --ink-mute: #6B7069;
   --rule:     #C7CABF;
   --rule-firm:#A9AD9F;
   --field:    #F6F7F3;
-  --brass:    #8A6A2F;
-  --steel:    #3E5C6E;
+  --gold:        #9A7317;
+  --gold-deep:   #7A5A11;
+  --silver:      #77797C;
+  --silver-deep: #5C5F62;
 
   --metal: var(--ink);
+  --metal-deep: var(--ink);
 
   --serif: "Fraunces", "Hoefler Text", Georgia, serif;
   --sans:  "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   --measure: 62rem;
-  --gap: clamp(1.75rem, 4vw, 3.25rem);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -43,7 +47,7 @@ a {
 a:hover { text-decoration-color: currentColor; }
 
 :focus-visible {
-  outline: 2px solid var(--brass);
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
 
@@ -55,33 +59,17 @@ a:hover { text-decoration-color: currentColor; }
 
 /* ---------- masthead ---------- */
 
-.eyebrow {
-  margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
-  font-size: 0.7rem;
-  font-weight: 600;
-  font-stretch: 118%;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-}
-
 .masthead__title {
   margin: 0;
+  max-width: 18ch;
   font-family: var(--serif);
   font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
   font-weight: 400;
-  font-size: clamp(2.4rem, 7.5vw, 4.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.022em;
+  font-size: clamp(2.1rem, 5.6vw, 3.6rem);
+  line-height: 1.14;
+  padding-bottom: 0.12em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
-}
-
-.masthead__lede {
-  margin: 1.4rem 0 0;
-  max-width: 34em;
-  font-size: 1.0625rem;
-  color: var(--ink-mute);
-  text-wrap: pretty;
 }
 
 /* ---------- the conversion grid ---------- */
@@ -134,8 +122,8 @@ a:hover { text-decoration-color: currentColor; }
 }
 .box:hover { border-color: var(--ink-mute); }
 .box:focus-within {
-  border-color: var(--brass);
-  box-shadow: inset 0 0 0 1px var(--brass);
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
 }
 
 .box__prefix {
@@ -153,7 +141,7 @@ a:hover { text-decoration-color: currentColor; }
   padding: 0;
   background: none;
   color: inherit;
-  caret-color: var(--brass);
+  caret-color: var(--gold);
   font-family: var(--serif);
   font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
   font-weight: 400;
@@ -164,7 +152,7 @@ a:hover { text-decoration-color: currentColor; }
 }
 .box__input:focus { outline: none; }
 .box__input::placeholder { color: var(--rule-firm); }
-.box__input[aria-invalid="true"] { color: var(--brass); }
+.box__input[aria-invalid="true"] { color: var(--gold); }
 
 /* a year typed inline, in the middle of a phrase */
 .inline-field {
@@ -174,9 +162,9 @@ a:hover { text-decoration-color: currentColor; }
   border: 1px solid var(--rule-firm);
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
-.inline-field:focus-within { box-shadow: inset 0 0 0 1px var(--brass); }
+.inline-field:focus-within { box-shadow: inset 0 0 0 1px var(--gold); }
 .inline-field:hover { border-color: var(--ink-mute); }
-.inline-field:focus-within { border-color: var(--brass); }
+.inline-field:focus-within { border-color: var(--gold); }
 
 .inline-field__input {
   width: 4.2ch;
@@ -184,7 +172,7 @@ a:hover { text-decoration-color: currentColor; }
   padding: 0 0 0.05em;
   background: none;
   color: var(--ink);
-  caret-color: var(--brass);
+  caret-color: var(--gold);
   font: inherit;
   font-variant-numeric: lining-nums tabular-nums;
   text-align: center;
@@ -310,8 +298,8 @@ a:hover { text-decoration-color: currentColor; }
 
 /* ---------- the two metal rows ---------- */
 
-.cell[data-metal="gold"]   { --metal: var(--brass); }
-.cell[data-metal="silver"] { --metal: var(--steel); }
+.cell[data-metal="gold"]   { --metal: var(--gold); }
+.cell[data-metal="silver"] { --metal: var(--silver); }
 
 .cell { padding-bottom: 1.1rem; align-self: baseline; }
 .cell--metal.cell[data-metal="gold"]     { grid-area: gold-m; }
@@ -337,7 +325,7 @@ a:hover { text-decoration-color: currentColor; }
   font-weight: 700;
   font-stretch: 122%;
   letter-spacing: 0.14em;
-  color: var(--metal);
+  color: var(--metal-deep);
 }
 
 .metal__weight {
@@ -353,7 +341,7 @@ a:hover { text-decoration-color: currentColor; }
   font-stretch: 116%;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--metal);
+  color: var(--metal-deep);
 }
 
 .answer {
@@ -383,8 +371,8 @@ a:hover { text-decoration-color: currentColor; }
   text-wrap: pretty;
 }
 .sentence b { font-weight: 600; }
-.sentence .au { color: var(--brass); }
-.sentence .ag { color: var(--steel); }
+.sentence .au { color: var(--gold-deep); }
+.sentence .ag { color: var(--silver-deep); }
 
 /* ---------- ledger line and method ---------- */
 
