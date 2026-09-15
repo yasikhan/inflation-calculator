@@ -26,18 +26,35 @@
     <p class="head head--dollars">In <span class="inline-field">
         <input class="inline-field__input" id="to-year" name="to-year" type="number"
                step="1" value="2026" aria-label="Year to price it in"></span>
-      <span id="to-year-label">dollars</span></p>
+      <span id="to-year-label">dollars</span>
+      <span class="scale scale--answer">
+        <select class="scale__select" id="answer-scale" aria-label="Scale of the answers">
+          <option value="auto">Auto</option>
+          <option value="0">&mdash;</option>
+          <option value="3">K</option>
+          <option value="6">M</option>
+          <option value="9">B</option>
+          <option value="12">T</option>
+        </select></span></p>
 
     <div class="amount">
       <div class="box box--amount">
         <span class="box__prefix" aria-hidden="true">$</span>
         <input class="box__input" id="amount" name="amount" type="text" inputmode="decimal"
-               value="250" placeholder="0" spellcheck="false" aria-labelledby="amount-head">
+               value="100" placeholder="0" spellcheck="false" aria-labelledby="amount-head">
+        <span class="scale scale--amount">
+          <select class="scale__select" id="amount-scale" aria-label="Scale of the amount">
+            <option value="0">&mdash;</option>
+            <option value="3">K</option>
+            <option value="6">M</option>
+            <option value="9">B</option>
+            <option value="12">T</option>
+          </select></span>
       </div>
       <p class="amount__year">in <span class="inline-field">
           <input class="inline-field__input" id="from-year" name="from-year" type="number"
                  step="1" value="1965" aria-label="Year you had it"></span></p>
-      <p class="hint">Type any amount or year</p>
+      <p class="hint">Type any amount or year. A suffix like 2.5b sets the scale too.</p>
     </div>
 
     <div class="cell cell--metal" data-metal="gold">
@@ -77,24 +94,52 @@
   <p class="status" id="status" role="status"></p>
 
   <footer class="method">
-    <h2 class="method__head">Method</h2>
     <div class="method__body">
-    <p>Your amount is divided by the price of an ounce in the year you had it, then multiplied
-      by the price of an ounce in the year you are pricing it in. The ounce is the fixed
-      quantity; only the dollars on either side of it move.</p>
-    <p>Each year is valued at the midpoint of its opening and closing price. That is not the
-      same as the year&rsquo;s average, and in a violent year the two part company: silver opened
-      1980 at $39.95 and closed it at $15.50, a midpoint of $27.73 against a true annual mean
-      near $20.98.</p>
-    <p>From 1968 the prices are the daily London fixes published by the
-      <a href="https://prices.lbma.org.uk/">LBMA</a>, taking each year&rsquo;s first and last fix.
-      Before 1968 there was one published figure per year, so the opening and closing prices
-      are the same: gold at its administered price, $20.67 until 1933 and $35.00 from 1934, and
-      silver at the unit value in
-      <a href="https://www.usgs.gov/centers/national-minerals-information-center/historical-statistics-mineral-commodities-united">USGS Data Series 140</a>,
-      which tracks the annual New York price to within about 0.3%. The CPI-U comparison comes
-      from <a href="https://fred.stlouisfed.org/series/CPIAUCNS">FRED series CPIAUCNS</a> and
-      begins in 1913.</p>
+
+      <section class="method__part">
+        <h2 class="method__head">Method</h2>
+
+        <p>The calculation using the gold or silver standard is very simple: the amount you
+          enter ($X) is divided by the price of an ounce of the material in the year you
+          choose, and then multiplied by the price of an ounce in the year you want to see
+          the outcome.</p>
+
+        <div class="eq" role="math" aria-label="Dollars at the first year, divided by the price
+             of an ounce at the first year, multiplied by the price of an ounce at the second
+             year, equals dollars at the second year.">
+          <span class="eq__frac" aria-hidden="true">
+            <span class="eq__num">$X<sub>t1</sub></span>
+            <span class="eq__den">oz<sub>t1</sub></span>
+          </span>
+          <span class="eq__op" aria-hidden="true">&times;</span>
+          <span class="eq__term" aria-hidden="true">oz<sub>t2</sub></span>
+          <span class="eq__op eq__op--eq" aria-hidden="true">=</span>
+          <span class="eq__term" aria-hidden="true">$X<sub>t2</sub></span>
+        </div>
+
+        <p>This provides a significantly more reliable comparison frame to understand how the
+          value of the dollar has changed. What bought one ounce of gold in 1950 buys a lot
+          less gold today.</p>
+      </section>
+
+      <section class="method__part">
+        <h2 class="method__head">Notes on method</h2>
+
+        <p>The value of an ounce for each metal for each year is the halfway point between its
+          opening and closing yearly prices. From 1968 to present day, the prices are the daily
+          London fixes published by the <a href="https://prices.lbma.org.uk/">LBMA</a>, taking
+          each year&rsquo;s first and last price and applying the midpoint method.</p>
+
+        <p>Before 1968 there was only one published figure per year: gold only had one
+          administered price, $20.67 until 1933 and $35.00 from 1934&ndash;1968. Before 1968, we
+          take silver at the unit value (&ldquo;real and nominal price in USD&rdquo;) published in
+          <a href="https://www.usgs.gov/centers/national-minerals-information-center/historical-statistics-mineral-commodities-united">USGS Data Series 140</a>.</p>
+
+        <p>The CPI-U comparison, which is the standard method for inflation calculations, comes
+          from <a href="https://fred.stlouisfed.org/series/CPIAUCNS">FRED series CPIAUCNS</a>
+          and begins in 1913.</p>
+      </section>
+
     </div>
 
     <p class="method__stamp" id="asof"></p>

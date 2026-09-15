@@ -204,6 +204,67 @@ mark {
 .inline-field__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .inline-field__input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
+/* a scale picked from a list, held to the same field idiom */
+.scale {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: var(--field);
+  border: 1px solid var(--rule-firm);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.scale:hover { border-color: var(--ink-mute); }
+.scale:focus-within {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.scale::after {
+  content: "";
+  position: absolute;
+  right: 0.55em;
+  width: 0.34em;
+  height: 0.34em;
+  border-right: 1px solid var(--ink-mute);
+  border-bottom: 1px solid var(--ink-mute);
+  transform: translateY(-0.14em) rotate(45deg);
+  pointer-events: none;
+}
+
+.scale__select {
+  margin: 0;
+  border: 0;
+  padding: 0.16em 1.7em 0.2em 0.55em;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.scale__select:focus { outline: none; }
+
+/* inside the amount box the select must not take the box's display face */
+.scale--amount {
+  flex: none;
+  align-self: center;
+  margin-left: 0.55rem;
+}
+.scale--amount .scale__select {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.scale--answer .scale__select { color: var(--ink); }
+
 .amount__year {
   margin: 0.85rem 0 0;
   font-size: 1.0625rem;
@@ -316,8 +377,61 @@ mark {
 .method p { margin: 0 0 0.9rem; break-inside: avoid; }
 
 .method__body {
-  columns: 2;
-  column-gap: clamp(2rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: start;
+}
+.method__part > :last-child { margin-bottom: 0; }
+
+/* ---------- the formula, set as a formula ---------- */
+
+.eq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.62em;
+  margin: 1.5rem 0;
+  padding: 1.35rem 0.2rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  line-height: 1.15;
+  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* a real rule between numerator and denominator, centred on the operators */
+.eq__frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+}
+.eq__num { padding: 0 0.5em 0.14em; }
+.eq__den {
+  padding: 0.14em 0.5em 0;
+  border-top: 1px solid currentColor;
+}
+
+.eq__term { flex: none; }
+.eq__op {
+  flex: none;
+  padding: 0 0.05em;
+  color: var(--ink-mute);
+}
+.eq__op--eq { padding: 0 0.15em; }
+
+.eq sub {
+  position: relative;
+  bottom: -0.22em;
+  font-size: 0.6em;
+  vertical-align: baseline;
+  letter-spacing: 0.01em;
+  color: var(--ink-mute);
 }
 
 .method__head {
@@ -331,6 +445,9 @@ mark {
 }
 
 .method__stamp {
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
   font-size: 0.63rem;
   font-stretch: 112%;
   letter-spacing: 0.16em;
@@ -394,7 +511,7 @@ mark {
 }
 
 @media (max-width: 46rem) {
-  .method__body { columns: 1; }
+  .method__body { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {
