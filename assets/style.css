@@ -391,11 +391,20 @@ mark {
   overflow-x: auto;
   font-family: var(--serif);
   font-variation-settings: "opsz" 48, "SOFT" 0, "WONK" 1;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   line-height: 1.5;
   white-space: nowrap;
   color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
+}
+
+.eq sub {
+  position: relative;
+  bottom: -0.26em;
+  padding-left: 0.03em;
+  font-size: 0.62em;
+  vertical-align: baseline;
+  color: var(--ink-mute);
 }
 
 .method__head {
