@@ -367,7 +367,6 @@ mark {
 
 .method {
   margin-top: clamp(3rem, 7vw, 5rem);
-  padding-top: 1.4rem;
   border-top: 1px solid var(--rule);
   font-size: 0.8125rem;
   line-height: 1.65;
@@ -376,6 +375,7 @@ mark {
 .method p { margin: 0 0 0.9rem; break-inside: avoid; }
 
 .method__body {
+  margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(2rem, 5vw, 3.5rem);
@@ -383,28 +383,33 @@ mark {
 }
 .method__part > :last-child { margin-bottom: 0; }
 
-/* ---------- the formula, set as a formula ---------- */
+/* ---------- the formula ----------
+   A display band at the head of the footer rather than a figure squeezed into
+   a column. "$/oz" is read as dollars per ounce, so the unit algebra is on the
+   page — dollars over dollars-per-ounce leaves ounces, ounces times
+   dollars-per-ounce leaves dollars — and no key is needed under it. The years
+   are the reader's own, bound to the two year fields. */
 
 .eq {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.62em;
-  margin: 1.5rem 0;
-  padding: 1.35rem 0.2rem;
-  border-top: 1px solid var(--rule);
+  gap: 0.5em;
+  margin: 0;
+  padding: clamp(2.1rem, 5vw, 3.2rem) 0;
   border-bottom: 1px solid var(--rule);
   overflow-x: auto;
   font-family: var(--serif);
-  font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
-  font-size: clamp(1rem, 2.2vw, 1.32rem);
-  line-height: 1.15;
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 3.5vw, 2.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
   color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
-/* a real rule between numerator and denominator, centred on the operators */
-/* stretch, so the rule spans the wider of the two terms rather than the lower one */
+/* stretch, so the rule spans the wider of the two terms */
 .eq__frac {
   display: inline-flex;
   flex-direction: column;
@@ -412,48 +417,31 @@ mark {
   flex: none;
   text-align: center;
 }
-.eq__num { padding: 0 0.5em 0.16em; }
+.eq__num { padding: 0 0.6em 0.2em; }
 .eq__den {
-  padding: 0.18em 0.5em 0;
-  border-top: 1px solid currentColor;
+  padding: 0.22em 0.6em 0;
+  border-top: 1px solid var(--ink);
 }
 
 .eq__term { flex: none; }
+
+/* math spacing: a little air around the binary sign, more around the relation */
 .eq__op {
   flex: none;
-  padding: 0 0.05em;
+  font-size: 0.74em;
   color: var(--ink-mute);
+  padding: 0 0.1em;
 }
-.eq__op--eq { padding: 0 0.15em; }
+.eq__op--rel { font-size: 0.84em; padding: 0 0.3em; }
 
-/* the symbol carries the display face; the year is a label, and says so */
-.eq__sym { white-space: nowrap; }
-
-.eq__yr {
-  display: inline-block;
-  margin-left: 0.24em;
-  transform: translateY(0.34em);
-  font-family: var(--sans);
-  font-size: 0.4em;
-  font-weight: 600;
-  font-stretch: 112%;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
+.eq__y {
+  position: relative;
+  bottom: -0.34em;
+  margin-left: 0.05em;
+  font-size: 0.34em;
+  vertical-align: baseline;
+  letter-spacing: 0.02em;
   color: var(--ink-mute);
-}
-
-.eq__key {
-  margin: -0.35rem 0 0.9rem;
-  font-size: 0.74rem;
-  line-height: 1.55;
-}
-.eq__key b {
-  font-family: var(--serif);
-  font-variation-settings: "opsz" 24, "WONK" 1;
-  font-weight: 400;
-  font-size: 1.1em;
-  color: var(--ink);
 }
 
 .method__head {
