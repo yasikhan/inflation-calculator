@@ -13,8 +13,6 @@
     toYear: document.getElementById("to-year"),
     amountScale: document.getElementById("amount-scale"),
     convert: document.getElementById("controls"),
-    eq: document.getElementById("eq"),
-    eqYears: document.querySelectorAll(".eq__y"),
     toYearLabel: document.getElementById("to-year-label"),
     status: document.getElementById("status"),
     asof: document.getElementById("asof")
@@ -206,19 +204,6 @@
 
   /* ---------- the calculation ---------- */
 
-  // The formula in the footer carries the reader's own years, not year 1 and
-  // year 2, so it needs no key to be read.
-  function setEquationYears(from, to) {
-    els.eqYears.forEach(function (el) {
-      var year = el.getAttribute("data-year") === "from" ? from : to;
-      if (el.textContent !== String(year)) { el.textContent = year; }
-    });
-    els.eq.setAttribute("aria-label",
-      "The amount you enter in " + from + ", divided by the dollar price of an ounce in " +
-      from + ", multiplied by the dollar price of an ounce in " + to +
-      ", equals the amount in " + to + " dollars.");
-  }
-
   function priceOf(year, metal) {
     return DATA.years[String(year)][metal].mid;
   }
@@ -232,8 +217,6 @@
 
     els.toYearLabel.textContent = "dollars";
     var partial = DATA.years[String(to)].partial ? ", year to date" : "";
-
-    setEquationYears(from, to);
 
     if (typed === null) {
       blankAll();

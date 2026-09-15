@@ -367,6 +367,7 @@ mark {
 
 .method {
   margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.4rem;
   border-top: 1px solid var(--rule);
   font-size: 0.8125rem;
   line-height: 1.65;
@@ -375,7 +376,6 @@ mark {
 .method p { margin: 0 0 0.9rem; break-inside: avoid; }
 
 .method__body {
-  margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(2rem, 5vw, 3.5rem);
@@ -383,65 +383,19 @@ mark {
 }
 .method__part > :last-child { margin-bottom: 0; }
 
-/* ---------- the formula ----------
-   A display band at the head of the footer rather than a figure squeezed into
-   a column. "$/oz" is read as dollars per ounce, so the unit algebra is on the
-   page — dollars over dollars-per-ounce leaves ounces, ounces times
-   dollars-per-ounce leaves dollars — and no key is needed under it. The years
-   are the reader's own, bound to the two year fields. */
+/* the formula, set as one line in the prose it belongs to */
 
 .eq {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  margin: 0;
-  padding: clamp(2.1rem, 5vw, 3.2rem) 0;
-  border-bottom: 1px solid var(--rule);
+  margin: 1.25rem 0;
+  text-align: center;
   overflow-x: auto;
   font-family: var(--serif);
-  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
-  font-weight: 400;
-  font-size: clamp(1.4rem, 3.5vw, 2.3rem);
-  line-height: 1.08;
-  letter-spacing: -0.012em;
+  font-variation-settings: "opsz" 48, "SOFT" 0, "WONK" 1;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  white-space: nowrap;
   color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
-}
-
-/* stretch, so the rule spans the wider of the two terms */
-.eq__frac {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex: none;
-  text-align: center;
-}
-.eq__num { padding: 0 0.6em 0.2em; }
-.eq__den {
-  padding: 0.22em 0.6em 0;
-  border-top: 1px solid var(--ink);
-}
-
-.eq__term { flex: none; }
-
-/* math spacing: a little air around the binary sign, more around the relation */
-.eq__op {
-  flex: none;
-  font-size: 0.74em;
-  color: var(--ink-mute);
-  padding: 0 0.1em;
-}
-.eq__op--rel { font-size: 0.84em; padding: 0 0.3em; }
-
-.eq__y {
-  position: relative;
-  bottom: -0.34em;
-  margin-left: 0.05em;
-  font-size: 0.34em;
-  vertical-align: baseline;
-  letter-spacing: 0.02em;
-  color: var(--ink-mute);
 }
 
 .method__head {
