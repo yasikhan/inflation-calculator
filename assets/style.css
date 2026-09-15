@@ -386,16 +386,41 @@ mark {
 /* the formula, set as one line in the prose it belongs to */
 
 .eq {
-  margin: 1.25rem 0;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  margin: 1.6rem 0;
   overflow-x: auto;
   font-family: var(--serif);
   font-variation-settings: "opsz" 48, "SOFT" 0, "WONK" 1;
-  font-size: 1.12rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  line-height: 1.15;
   white-space: nowrap;
   color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* the fraction is the first half; the rest sits beside it, on its rule */
+.eq__frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: none;
+  text-align: center;
+}
+.eq__num { padding: 0 0.5em 0.16em; }
+.eq__den {
+  padding: 0.18em 0.5em 0.06em;
+  border-top: 1px solid var(--ink);
+}
+
+.eq__rest { flex: none; }
+
+/* the asterisk rides at cap height; drop it onto the line the = sits on */
+.eq__mul {
+  display: inline-block;
+  transform: translateY(0.2em);
 }
 
 .eq sub {
