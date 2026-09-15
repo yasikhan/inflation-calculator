@@ -323,8 +323,7 @@
       e.preventDefault();
     });
 
-    els.asof.textContent = "Prices through " + data.meta.latest_date +
-      " · built " + data.meta.generated;
+    els.asof.textContent = "Prices through " + data.meta.latest_date;
 
     render();
   }
