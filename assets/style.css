@@ -397,22 +397,24 @@ mark {
   overflow-x: auto;
   font-family: var(--serif);
   font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
-  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  font-size: clamp(1rem, 2.2vw, 1.32rem);
   line-height: 1.15;
   color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
 /* a real rule between numerator and denominator, centred on the operators */
+/* stretch, so the rule spans the wider of the two terms rather than the lower one */
 .eq__frac {
   display: inline-flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   flex: none;
+  text-align: center;
 }
-.eq__num { padding: 0 0.5em 0.14em; }
+.eq__num { padding: 0 0.5em 0.16em; }
 .eq__den {
-  padding: 0.14em 0.5em 0;
+  padding: 0.18em 0.5em 0;
   border-top: 1px solid currentColor;
 }
 
@@ -424,13 +426,34 @@ mark {
 }
 .eq__op--eq { padding: 0 0.15em; }
 
-.eq sub {
-  position: relative;
-  bottom: -0.22em;
-  font-size: 0.6em;
-  vertical-align: baseline;
-  letter-spacing: 0.01em;
+/* the symbol carries the display face; the year is a label, and says so */
+.eq__sym { white-space: nowrap; }
+
+.eq__yr {
+  display: inline-block;
+  margin-left: 0.24em;
+  transform: translateY(0.34em);
+  font-family: var(--sans);
+  font-size: 0.4em;
+  font-weight: 600;
+  font-stretch: 112%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
   color: var(--ink-mute);
+}
+
+.eq__key {
+  margin: -0.35rem 0 0.9rem;
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+.eq__key b {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 24, "WONK" 1;
+  font-weight: 400;
+  font-size: 1.1em;
+  color: var(--ink);
 }
 
 .method__head {
