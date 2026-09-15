@@ -12,7 +12,6 @@
     fromYear: document.getElementById("from-year"),
     toYear: document.getElementById("to-year"),
     amountScale: document.getElementById("amount-scale"),
-    answerScale: document.getElementById("answer-scale"),
     convert: document.getElementById("controls"),
     toYearLabel: document.getElementById("to-year-label"),
     status: document.getElementById("status"),
@@ -190,10 +189,11 @@
     return parseInt(els.amountScale.value, 10) || 0;
   }
 
-  // Auto lets the answers pick their own suffix; anything else is the reader's word.
+  // The answers take their scale from the one you set on the amount, stepping up
+  // on their own when the figures outgrow it: enter K and see K, unless the
+  // answers have run into millions, in which case they say so.
   function answerExp(largest) {
-    var chosen = els.answerScale.value;
-    return chosen === "auto" ? autoExp(largest) : (parseInt(chosen, 10) || 0);
+    return Math.max(amountExp(), autoExp(largest));
   }
 
   function clampYear(value) {
@@ -317,9 +317,7 @@
       var typed = readAmount();
       if (typed !== null) { els.amount.value = money(typed).slice(1); }
     });
-    [els.amountScale, els.answerScale].forEach(function (select) {
-      select.addEventListener("change", render);
-    });
+    els.amountScale.addEventListener("change", render);
     els.amount.addEventListener("focus", function () { els.amount.select(); });
     document.getElementById("controls").addEventListener("submit", function (e) {
       e.preventDefault();

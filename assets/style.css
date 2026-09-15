@@ -263,7 +263,6 @@ mark {
   color: var(--ink-mute);
 }
 
-.scale--answer .scale__select { color: var(--ink); }
 
 .amount__year {
   margin: 0.85rem 0 0;
