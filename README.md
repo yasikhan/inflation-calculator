@@ -43,7 +43,17 @@ python3 scripts/build_data.py --refresh
 ```
 
 Stdlib only, no packages needed. Raw upstream responses are cached in `data/raw/`; without
-`--refresh` the script rebuilds from that cache.
+`--refresh` the script rebuilds from that cache. `--refresh=gold_lbma,silver_lbma,cpi_fred`
+refreshes only the named sources, which is what the weekly job uses — the USGS workbook is a
+frozen 2021 publication, so re-downloading it only adds a way for the job to fail.
+
+`.github/workflows/refresh-prices.yml` does this every Monday at 07:00 UTC and commits the
+result, which is what republishes the page. It can also be run by hand from the Actions tab.
+Before committing, `scripts/check_data.py` compares the rebuild against the committed file:
+these series only ever gain days, so a rebuild that drops years, loses its daily fixes or
+moves its latest fix backwards is a truncated response rather than news, and the job fails
+instead of publishing it. A week with no new fixes is left alone rather than committed, since
+otherwise the changing `meta.generated` date alone would land a commit.
 
 ## Running it locally
 

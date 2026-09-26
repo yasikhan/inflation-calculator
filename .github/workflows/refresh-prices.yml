@@ -1,0 +1,61 @@
+# Rebuild data/metals.json from upstream every Monday and commit it if the
+# prices moved. Pushing to the default branch is what republishes the Pages
+# site, so there is no deploy step here.
+name: Refresh prices
+
+on:
+  schedule:
+    # Mondays, 07:00 UTC: after Friday's London fixes have been published and
+    # picked up by LBMA's JSON. GitHub runs cron late under load; that is fine
+    # for a weekly job.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-prices
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Keep the committed data to compare against
+        run: git show HEAD:data/metals.json > "$RUNNER_TEMP/previous.json"
+
+      - name: Rebuild from upstream
+        # The USGS workbook is a frozen 2021 publication, so it stays cached;
+        # re-downloading it weekly would only add a way for this job to fail.
+        run: python3 scripts/build_data.py --refresh=gold_lbma,silver_lbma,cpi_fred
+
+      - name: Vet the rebuild
+        id: vet
+        # shell: bash for pipefail, so a refused rebuild fails the step
+        # rather than being swallowed by tee.
+        shell: bash
+        run: |
+          python3 scripts/check_data.py "$RUNNER_TEMP/previous.json" \
+            | tee -a "$GITHUB_OUTPUT"
+
+      - name: Commit the new prices
+        if: steps.vet.outputs.changed == 'yes'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Refresh prices through ${{ steps.vet.outputs.latest }}"
+          git push
+
+      - name: Say nothing moved
+        if: steps.vet.outputs.changed == 'no'
+        run: echo "No new fixes since ${{ steps.vet.outputs.latest }}; leaving the data alone."

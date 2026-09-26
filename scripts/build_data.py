@@ -8,12 +8,16 @@ Sources
   1913-now  CPI-U, not seasonally adjusted              FRED CPIAUCNS
 
 Stdlib only. Re-run to refresh; raw responses are cached in data/raw/.
+Pass --refresh to re-download every source, or --refresh=key,key for named
+ones only -- the USGS workbook is a frozen 2021 publication and never moves.
 """
 
 import json
 import re
 import ssl
 import sys
+import time
+import urllib.error
 import urllib.request
 import zipfile
 from datetime import date
@@ -51,20 +55,33 @@ for _y in range(1934, 1940):
     GOLD_PRE_1968[_y] = 35.00
 
 
-def fetch(key, filename, refresh=False):
-    """Download a source, caching it under data/raw/."""
+def fetch(key, filename, refresh=(), attempts=3):
+    """Download a source if it is in refresh, else read the data/raw/ cache.
+
+    Upstream occasionally just times out, so a download retries rather than
+    losing an unattended run to one slow read. The cache is only written once
+    a response has arrived whole, which leaves the old copy intact on failure.
+    """
     path = RAW / filename
-    if path.exists() and not refresh:
+    if path.exists() and key not in refresh:
         print(f"  cached  {filename}")
         return path.read_bytes()
-    print(f"  fetch   {filename}")
     req = urllib.request.Request(SOURCES[key], headers={"User-Agent": "Mozilla/5.0"})
     ctx = ssl.create_default_context()
-    with urllib.request.urlopen(req, timeout=60, context=ctx) as resp:
-        body = resp.read()
-    RAW.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(body)
-    return body
+    for attempt in range(1, attempts + 1):
+        print(f"  fetch   {filename}" + (f"  (try {attempt})" if attempt > 1 else ""))
+        try:
+            with urllib.request.urlopen(req, timeout=60, context=ctx) as resp:
+                body = resp.read()
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            if attempt == attempts:
+                sys.exit(f"fetch: {key} failed after {attempts} tries: {exc}")
+            print(f"          {exc}; retrying in {attempt * 5}s")
+            time.sleep(attempt * 5)
+            continue
+        RAW.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(body)
+        return body
 
 
 def lbma_series(body):
@@ -164,7 +181,21 @@ def metal_year(open_price, close_price, mean_price):
     }
 
 
-def build(refresh=False):
+def parse_refresh(argv):
+    """Which sources to re-download: all for --refresh, named for --refresh=a,b."""
+    for arg in argv:
+        if arg == "--refresh":
+            return set(SOURCES)
+        if arg.startswith("--refresh="):
+            keys = {k.strip() for k in arg.split("=", 1)[1].split(",") if k.strip()}
+            unknown = keys - set(SOURCES)
+            if unknown:
+                sys.exit(f"--refresh: unknown source {', '.join(sorted(unknown))}")
+            return keys
+    return set()
+
+
+def build(refresh=()):
     print("Sources:")
     gold_daily = lbma_series(fetch("gold_lbma", "lbma_gold_pm.json", refresh))
     silver_daily = lbma_series(fetch("silver_lbma", "lbma_silver.json", refresh))
@@ -221,4 +252,4 @@ def build(refresh=False):
 
 
 if __name__ == "__main__":
-    build(refresh="--refresh" in sys.argv)
+    build(refresh=parse_refresh(sys.argv[1:]))
