@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generated": "2026-09-15",
+  "generated": "2026-09-26",
   "latest_date": "2026-09-14",
   "first_year": 1900,
   "last_year": 2026,
@@ -9,7 +9,7 @@
    "gold_lbma": "https://prices.lbma.org.uk/json/gold_pm.json",
    "silver_lbma": "https://prices.lbma.org.uk/json/silver.json",
    "silver_usgs": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/ds140-silver-2021.xlsx",
-   "cpi_fred": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS"
+   "cpi_bls": "https://download.bls.gov/pub/time.series/cu/cu.data.1.AllItems"
   }
  },
  "years": {
@@ -2030,7 +2030,7 @@
     "mid": 68.5125,
     "mean": 73.8722
    },
-   "cpi": 331.1804,
+   "cpi": 331.6554,
    "partial": true
   }
  }

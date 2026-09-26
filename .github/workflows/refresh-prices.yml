@@ -36,7 +36,10 @@ jobs:
       - name: Rebuild from upstream
         # The USGS workbook is a frozen 2021 publication, so it stays cached;
         # re-downloading it weekly would only add a way for this job to fail.
-        run: python3 scripts/build_data.py --refresh=gold_lbma,silver_lbma,cpi_fred
+        env:
+          # BLS answers 403 without a contact address in the User-Agent.
+          BLS_CONTACT: ${{ secrets.BLS_CONTACT }}
+        run: python3 scripts/build_data.py --refresh=gold_lbma,silver_lbma,cpi_bls
 
       - name: Vet the rebuild
         id: vet

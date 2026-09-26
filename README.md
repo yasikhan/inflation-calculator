@@ -25,7 +25,7 @@ its opening and closing price.
 | 1968– | Gold, silver | Daily London fixes, [LBMA](https://prices.lbma.org.uk/) — each year's first and last fix |
 | 1900–1967 | Silver | [USGS Data Series 140](https://www.usgs.gov/centers/national-minerals-information-center/historical-statistics-mineral-commodities-united) unit value, which tracks the annual New York price to within about 0.3% |
 | 1900–1967 | Gold | The administered price: $20.67 until 1933, $35.00 from 1934 |
-| 1913– | CPI-U | [FRED CPIAUCNS](https://fred.stlouisfed.org/series/CPIAUCNS) |
+| 1913– | CPI-U | [BLS CUUR0000SA0](https://www.bls.gov/cpi/), all items, US city average, not seasonally adjusted |
 
 Before 1968 there was one published figure per year, so the opening and closing prices are
 the same and each year is flagged `"basis": "annual"`. CPI-U does not exist before 1913, and
@@ -43,9 +43,14 @@ python3 scripts/build_data.py --refresh
 ```
 
 Stdlib only, no packages needed. Raw upstream responses are cached in `data/raw/`; without
-`--refresh` the script rebuilds from that cache. `--refresh=gold_lbma,silver_lbma,cpi_fred`
+`--refresh` the script rebuilds from that cache. `--refresh=gold_lbma,silver_lbma,cpi_bls`
 refreshes only the named sources, which is what the weekly job uses — the USGS workbook is a
 frozen 2021 publication, so re-downloading it only adds a way for the job to fail.
+
+BLS answers 403 unless the User-Agent names a contact address, so refreshing CPI needs
+`BLS_CONTACT=you@example.com` in the environment; the weekly job passes it from a repository
+secret of that name, which keeps an address out of the source. BLS ships every CPI series in
+one 2.6MB file, so only the CUUR0000SA0 rows are kept in `data/raw/bls_cpi_u.txt`.
 
 `.github/workflows/refresh-prices.yml` does this every Monday at 07:00 UTC and commits the
 result, which is what republishes the page. It can also be run by hand from the Actions tab.
