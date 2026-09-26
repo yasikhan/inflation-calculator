@@ -1,7 +1,7 @@
 {
  "meta": {
   "generated": "2026-09-26",
-  "latest_date": "2026-09-14",
+  "latest_date": "2026-09-25",
   "first_year": 1900,
   "last_year": 2026,
   "cpi_first_year": 1913,
@@ -2020,15 +2020,15 @@
    "basis": "fix",
    "gold": {
     "open": 4352.95,
-    "close": 4267.1,
-    "mid": 4310.025,
-    "mean": 4562.8638
+    "close": 4261.05,
+    "mid": 4307.0,
+    "mean": 4550.7161
    },
    "silver": {
     "open": 74.215,
-    "close": 62.81,
-    "mid": 68.5125,
-    "mean": 73.8722
+    "close": 65.015,
+    "mid": 69.615,
+    "mean": 73.4395
    },
    "cpi": 331.6554,
    "partial": true
